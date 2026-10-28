@@ -7,6 +7,8 @@ package proyecto1.proyecto2.lfp.AnalizadorLexico;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
@@ -25,7 +27,10 @@ public class FramePrincipal extends javax.swing.JFrame {
      */
     public FramePrincipal() {
         initComponents();
-        this.setResizable(false);
+  
+ 
+ 
+        
     }
 
     public File getArchivo() {
@@ -57,6 +62,16 @@ public class FramePrincipal extends javax.swing.JFrame {
         return direccionHtml;
     }
 
+    public JTable getTablaTokenIncorrectos() {
+        return tablaTokenIncorrectos;
+    }
+
+    public void setTablaTokenIncorrectos(JTable tablaTokenIncorrectos) {
+        this.tablaTokenIncorrectos = tablaTokenIncorrectos;
+    }
+
+  
+  
 
     /**
      * Creates new form FramePrincipal
@@ -72,15 +87,18 @@ public class FramePrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        ScrolPaneConsolaResultados = new javax.swing.JScrollPane();
         txtConsolaResultados = new javax.swing.JTextArea();
         Analizador = new javax.swing.JTabbedPane();
         CodigoFuente = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        ScrollPanelTextoFuente = new javax.swing.JScrollPane();
         TextoFuente = new javax.swing.JTextPane();
         IstaDeTokens = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaTokens = new javax.swing.JTable();
+        ListaDeTokensIncorrectos = new javax.swing.JPanel();
+        TokensIncorectos = new javax.swing.JScrollPane();
+        tablaTokenIncorrectos = new javax.swing.JTable();
         erroresSintacticos = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaErroresSintacticos = new javax.swing.JTable();
@@ -96,13 +114,13 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         txtConsolaResultados.setColumns(20);
         txtConsolaResultados.setRows(5);
-        jScrollPane1.setViewportView(txtConsolaResultados);
+        ScrolPaneConsolaResultados.setViewportView(txtConsolaResultados);
 
         CodigoFuente.setLayout(new java.awt.BorderLayout());
 
-        jScrollPane2.setViewportView(TextoFuente);
+        ScrollPanelTextoFuente.setViewportView(TextoFuente);
 
-        CodigoFuente.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        CodigoFuente.add(ScrollPanelTextoFuente, java.awt.BorderLayout.CENTER);
 
         Analizador.addTab("Fuente", CodigoFuente);
 
@@ -110,32 +128,51 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         tablaTokens.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Numero", "Lexema", "Tipo", "Fila", "Columna"
             }
         ));
         jScrollPane3.setViewportView(tablaTokens);
 
         IstaDeTokens.add(jScrollPane3, java.awt.BorderLayout.CENTER);
 
-        Analizador.addTab("Lista de tokens", IstaDeTokens);
+        Analizador.addTab("Lista de tokens correctos", IstaDeTokens);
+
+        ListaDeTokensIncorrectos.setLayout(new java.awt.BorderLayout());
+
+        tablaTokenIncorrectos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "numero", "Lexema", "Tipo", "Fila", "Columna"
+            }
+        ));
+        TokensIncorectos.setViewportView(tablaTokenIncorrectos);
+
+        ListaDeTokensIncorrectos.add(TokensIncorectos, java.awt.BorderLayout.CENTER);
+
+        Analizador.addTab("Lista de tokens errores", ListaDeTokensIncorrectos);
 
         erroresSintacticos.setLayout(new java.awt.BorderLayout());
 
         tablaErroresSintacticos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Numero", "Error", "Tipo encontrado", "Tipo esperado", "Fila", "Columna"
             }
         ));
         jScrollPane4.setViewportView(tablaErroresSintacticos);
@@ -212,8 +249,8 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Analizador)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1077, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 8, Short.MAX_VALUE)))
+                        .addComponent(ScrolPaneConsolaResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 1077, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -222,7 +259,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addContainerGap(28, Short.MAX_VALUE)
                 .addComponent(Analizador, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ScrolPaneConsolaResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27))
         );
 
@@ -357,7 +394,11 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JTabbedPane Analizador;
     private javax.swing.JPanel CodigoFuente;
     private javax.swing.JPanel IstaDeTokens;
+    private javax.swing.JPanel ListaDeTokensIncorrectos;
+    private javax.swing.JScrollPane ScrolPaneConsolaResultados;
+    private javax.swing.JScrollPane ScrollPanelTextoFuente;
     private javax.swing.JTextPane TextoFuente;
+    private javax.swing.JScrollPane TokensIncorectos;
     private javax.swing.JMenu btnAnalizar;
     private javax.swing.JMenu btnArbol;
     private javax.swing.JMenu btnCargarArchvio;
@@ -366,11 +407,10 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu btnTokensIncorrectosHtml;
     private javax.swing.JPanel erroresSintacticos;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable tablaErroresSintacticos;
+    private javax.swing.JTable tablaTokenIncorrectos;
     private javax.swing.JTable tablaTokens;
     private javax.swing.JTextArea txtConsolaResultados;
     // End of variables declaration//GEN-END:variables

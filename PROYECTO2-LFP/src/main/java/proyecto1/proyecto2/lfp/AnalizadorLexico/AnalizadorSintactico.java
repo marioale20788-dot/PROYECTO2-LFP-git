@@ -27,23 +27,25 @@ public class AnalizadorSintactico {
     }
     
     
-    public void avanzar(){      
-        try {
-            this.tokenActual = analizadorLexico.yylex();
-            if(this.tokenActual==null){
-                this.tokenActual = new Token(TokenTipos.EOF, "EOF", 0, 0);
-            }else{
-                if(this.tokenActual.getTipo()!=TokenTipos.EOF){
-                    this.listaDeTokens.add(tokenActual);
-                }
-                
-            }
-        } catch (IOException ex) {
-          tokenActual = new Token(TokenTipos.EOF, "EOF", 0, 0);
-        }
-        
+    public void avanzar() {
+
+    if (this.tokenActual != null && this.tokenActual.getTipo() == TokenTipos.EOF) {
+        return;
     }
-    
+
+    try {
+        this.tokenActual = analizadorLexico.yylex();
+        if (this.tokenActual == null) {
+            this.tokenActual = new Token(TokenTipos.EOF, "EOF", 0, 0);
+        } else {
+            if (this.tokenActual.getTipo() != TokenTipos.EOF) {
+                this.listaDeTokens.add(tokenActual);
+            }
+        }
+    } catch (IOException ex) {
+        this.tokenActual = new Token(TokenTipos.EOF, "EOF", 0, 0);
+    }
+}
     
     public void validaciones(TokenTipos tipoEsperado){
         if(tokenActual.getTipo()==tipoEsperado){
@@ -80,14 +82,13 @@ public class AnalizadorSintactico {
     }
     
   
-    public void analizarPrograma() {
-        analizarDirectivas();
-        analizarAgentes();
-        analizarEjecuciones();
-        analizarExportar();
-        validaciones(TokenTipos.EOF);
-    }
-
+  public void analizarPrograma() {
+    analizarDirectivas();
+    analizarAgentes();
+    analizarEjecuciones();
+    analizarExportar();
+    validaciones(TokenTipos.EOF);
+}
     public void analizarDirectivas() {
         while (tokenActual.getTipo() == TokenTipos.DIRECTIVA) {
             validaciones(TokenTipos.DIRECTIVA);
@@ -107,15 +108,15 @@ public class AnalizadorSintactico {
         }
     }
 
-    public void analizarAgente() {
-        validaciones(TokenTipos.AGENTE);
-        validaciones(TokenTipos.IDENTIFICADOR);
-        validaciones(TokenTipos.LLAVE_ABIERTA);
-        analizarContexto();
-        analizarVariables();
-        analizarComandos();
-        validaciones(TokenTipos.LLAVE_CERRADA);
-    }
+ public void analizarAgente() {
+    validaciones(TokenTipos.AGENTE);
+    validaciones(TokenTipos.IDENTIFICADOR);
+    validaciones(TokenTipos.LLAVE_ABIERTA);
+    analizarContexto();
+    analizarVariables();
+    analizarComandos();
+    validaciones(TokenTipos.LLAVE_CERRADA); 
+}
 
     public void analizarContexto() {
         if (tokenActual.getTipo() == TokenTipos.CONTEXTO) {
@@ -176,7 +177,7 @@ public class AnalizadorSintactico {
         }
     }
 
-    public void analizarTermino() {
+        public void analizarTermino() {
         switch (tokenActual.getTipo()) {
             case CADENA:
                 validaciones(TokenTipos.CADENA);
@@ -185,17 +186,18 @@ public class AnalizadorSintactico {
                 validaciones(TokenTipos.IDENTIFICADOR);
                 break;
             case NUMERO:
-                validaciones(TokenTipos.NUMERO);
-                if (tokenActual.getTipo() == TokenTipos.IDENTIFICADOR) {
-                    validaciones(TokenTipos.IDENTIFICADOR); 
-                }
-                break;
+    validaciones(TokenTipos.NUMERO);
+    if (tokenActual.getTipo() == TokenTipos.IDENTIFICADOR) {
+        validaciones(TokenTipos.IDENTIFICADOR);
+    }
+    break;
             case CARGAR:
                 validaciones(TokenTipos.CARGAR);
                 validaciones(TokenTipos.PARENTESIS_ABIERTO);
                 validaciones(TokenTipos.CADENA);
                 validaciones(TokenTipos.PARENTESIS_CERRADO);
                 break;
+               
             default:
                 errorEncontrado("CADENA, IDENTIFICADOR, NUMERO o CARGAR");
                  modoPanico();
