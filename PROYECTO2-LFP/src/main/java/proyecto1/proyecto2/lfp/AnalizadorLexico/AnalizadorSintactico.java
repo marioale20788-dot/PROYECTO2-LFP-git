@@ -22,6 +22,7 @@ public class AnalizadorSintactico {
         this.analizadorLexico=analizador;
         this.listaDeTokens = new ArrayList<>();
         this.erroresSintacticos = new ArrayList<>();
+        avanzar();
         
     }
     
@@ -228,6 +229,14 @@ public class AnalizadorSintactico {
             validaciones(TokenTipos.IDENTIFICADOR);
             masIds();
         }
+    }
+
+    public ArrayList<Token> getListaDeTokens() {
+        return listaDeTokens;
+    }
+
+    public ArrayList<ErrorSintactico> getErroresSintacticos() {
+        return erroresSintacticos;
     }
     
     

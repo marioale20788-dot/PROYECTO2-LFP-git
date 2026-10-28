@@ -4,6 +4,8 @@
 
 package proyecto1.proyecto2.lfp;
 
+import proyecto1.proyecto2.lfp.AnalizadorLexico.MotorFrame;
+
 /**
  *
  * @author mario
@@ -11,6 +13,7 @@ package proyecto1.proyecto2.lfp;
 public class PROYECTO2LFP {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        MotorFrame motor = new MotorFrame();
+        motor.inciarAnalizador();
     }
 }

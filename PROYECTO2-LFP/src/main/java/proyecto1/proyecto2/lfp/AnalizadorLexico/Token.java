@@ -15,11 +15,13 @@ public class Token {
     private int fila;
     private int columna;
 
+
     public Token(TokenTipos tipo, String lexema, int fila, int columna) {
         this.tipo = tipo;
         this.lexema = lexema;
         this.fila = fila;
         this.columna = columna;
+
     }
 
     public TokenTipos getTipo() {
