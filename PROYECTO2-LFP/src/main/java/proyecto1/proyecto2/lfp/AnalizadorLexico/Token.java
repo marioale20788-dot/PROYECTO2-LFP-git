@@ -100,7 +100,47 @@ public class Token {
             return Color.BLACK;
     }
 }
-    
+    public String obtenerColorTokenHTML() {
+    switch (tipo) {
+        case AGENTE:
+        case EJECUTAR:
+        case EXPORTAR:
+            return "#9370DB"; // Purple
+
+        case COMANDO_IA:
+            return "#0066CC"; // Blue
+
+        case CONECTOR:
+            return "#009688"; // Teal
+
+        case CADENA:
+            return "#D35400"; // Orange
+            
+        case NUMERO:
+            return "#2ECC71"; // Green
+
+        case IDENTIFICADOR:
+            return "#2C3E50"; // Dark Gray/Blue
+
+        case VARIABLE:
+        case CONTEXTO:
+            return "#8E44AD"; // Dark Purple
+
+        case DIRECTIVA:
+            return "#7F8C8D"; // Gray
+
+        case MAS:
+        case IGUAL:
+        case FLECHA:
+            return "#C0392B"; // Red
+
+        case ERROR:
+            return "#FF0000"; // Red
+
+        default:
+            return "#000000"; // Black
+    }
+}
     
     
 }

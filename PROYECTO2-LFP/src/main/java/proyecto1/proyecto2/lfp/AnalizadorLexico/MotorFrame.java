@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.Element;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import proyecto1.proyecto2.lfp.AnalizadorLexico.AST.EsribirReporteAST;
+import proyecto1.proyecto2.lfp.AnalizadorLexico.AST.ProgramaNodo;
 
 /**
  *
@@ -24,8 +26,10 @@ public class MotorFrame {
 
     private AnalizadorSintactico analizador;
     private AnalizadorLexico lexer;
+    private AnalizadorSemantico analizadorSemantico;
 
     private FramePrincipal principalFrame = new FramePrincipal();
+    ProgramaNodo program = new ProgramaNodo();
     Archivo archivo = new Archivo();
 
     public void inciarAnalizador() {
@@ -42,18 +46,37 @@ public class MotorFrame {
 
     }
 
+    public boolean inicializarConARchivo(File archivoAAbrir) {
+
+        if (archivoAAbrir.getName().endsWith(".pz")) {
+            principalFrame.setVisible(true);
+            principalFrame.setMotor(this);
+            String texto = archivo.leerArchivo(archivoAAbrir);
+            principalFrame.getTextoFuente().setText(texto);
+            return true;
+
+        } else {
+            JOptionPane.showMessageDialog(null, "FORMATO DE ARCHIVO INCORRECTO");
+            return false;
+        }
+
+    }
+
     public void analizarArchivo() {
 
         try {
             StringReader reader = new StringReader(principalFrame.getTextoFuente().getText());
             lexer = new AnalizadorLexico(reader);
             analizador = new AnalizadorSintactico(lexer);
-            analizador.analizarPrograma();
+            analizadorSemantico = new AnalizadorSemantico();
+            this.program = analizador.analizarPrograma();
+            ArrayList<ErrorSemantico> erroresSemanticos = (ArrayList<ErrorSemantico>) analizadorSemantico.analizar(program);
+
             cargaTablaTokensCorrectos();
             cargarTokensIncorrectos();
             cargaTablaErroresSintacticos();
             pintarTexto();
-            escribirResultado();
+            escribirResultado(program, erroresSemanticos);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -101,7 +124,6 @@ public class MotorFrame {
         }
 
     }
-   
 
     public void pintarTexto() {
         JTextPane areaTexto = principalFrame.getTextoFuente();
@@ -174,11 +196,36 @@ public class MotorFrame {
 
     }
 
-    public void escribirResultado() {
+    public ArrayList<Token> tokensCorrectoss(ArrayList<Token> tokens) {
+        ArrayList<Token> tokenCorrecto = new ArrayList<>();
+        for (Token token : tokens) {
+
+            if (token.getTipo() != TokenTipos.ERROR) {
+                tokenCorrecto.add(token);
+            }
+
+        }
+        return tokenCorrecto;
+
+    }
+
+    public void escribirResultado(ProgramaNodo programa, ArrayList<ErrorSemantico> errorSemantico) {
         principalFrame.getTxtConsolaResultados().setText("");
+        principalFrame.getTxtError().setText("");
+
+        int contadoreSemantico=0;
+        if(!errorSemantico.isEmpty()){
+            for (ErrorSemantico errorSemantico1 : errorSemantico) {
+                contadoreSemantico++;
+                principalFrame.getTxtError().append("ERROR SEMANTICO\n");
+                principalFrame.getTxtError().append(contadoreSemantico + " Error: fila: " + errorSemantico1.getFila() + " columna: " + errorSemantico1.getColumna() + " error: " + errorSemantico1.getDescripcion()+ "\n");
+                principalFrame.getTxtError().append("\n");
+            }
+            
+        }
         if (analizador.getErroresSintacticos().isEmpty() && ErroresLexicos(analizador.getListaDeTokens()).isEmpty()) {
             Prompt promt = new Prompt();
-            String texto = promt.generarPromt(analizador.getListaDeTokens());
+            String texto = promt.generarPrompt(programa);
             principalFrame.getTxtConsolaResultados().setText(texto);
 
         } else {
@@ -188,18 +235,18 @@ public class MotorFrame {
             int contadorES = 0;
             for (Token token : tokenError) {
                 contadorErrorLexico++;
-                principalFrame.getTxtConsolaResultados().append("ERROR LEXICO\n");
-                principalFrame.getTxtConsolaResultados().append(contadorErrorLexico + " Error: fila: " + token.getFila() + " columna: " + token.getColumna() + " lexema: " + token.getLexema() + "\n");
-                principalFrame.getTxtConsolaResultados().append("\n");
+                principalFrame.getTxtError().append("ERROR LEXICO\n");
+                principalFrame.getTxtError().append(contadorErrorLexico + " Error: fila: " + token.getFila() + " columna: " + token.getColumna() + " lexema: " + token.getLexema() + "\n");
+                principalFrame.getTxtError().append("\n");
 
             }
             for (ErrorSintactico error : erroresSintactico) {
                 contadorES++;
-                principalFrame.getTxtConsolaResultados().append("");
-                principalFrame.getTxtConsolaResultados().append("ERROR SINTACTICO\n");
-                principalFrame.getTxtConsolaResultados().append(contadorES + " Error: fila: " + error.getFila() + " columna: " + error.getColumna() + " valor esperado: " + error.getTipoEsperado()
+                principalFrame.getTxtError().append("");
+                principalFrame.getTxtError().append("ERROR SINTACTICO\n");
+                principalFrame.getTxtError().append(contadorES + " Error: fila: " + error.getFila() + " columna: " + error.getColumna() + " valor esperado: " + error.getTipoEsperado()
                         + " valor encontrado: " + error.getTipoEncontrado() + "\n");
-                principalFrame.getTxtConsolaResultados().append("\n");
+                principalFrame.getTxtError().append("\n");
 
             }
 
@@ -214,8 +261,9 @@ public class MotorFrame {
         modeloTabla.setRowCount(0);
         int contador = 0;
         for (Token token : tokens) {
-            contador++;
+
             if (token.getTipo() == TokenTipos.ERROR) {
+                contador++;
                 modeloTabla.addRow(new Object[]{
                     contador,
                     token.getLexema(),
@@ -229,12 +277,86 @@ public class MotorFrame {
     }
 
     public void crearHtmlTokensCorrectos(String nombre) {
-        String ruta = principalFrame.getDireccionHtml();
+        if (analizador != null) {
+            archivo = new Archivo();
+            String ruta = principalFrame.getDireccionHtml();
+            int contador = 0;
+            archivo.htmlTokens(nombre, ruta);
+            ArrayList<Token> correctos = tokensCorrectoss(analizador.getListaDeTokens());
+            for (Token correcto : correctos) {
+                contador++;
+                archivo.escribirHtml(contador, correcto.getLexema(), correcto.getTipo().toString(), correcto.getFila(),
+                        correcto.getColumna(), correcto.obtenerColorTokenHTML());
+
+            }
+        }
+
+    }
+
+    public void crearHtmlErrorSintactico(String nombre) {
+        if (analizador != null) {
+            archivo = new Archivo();
+            String ruta = principalFrame.getDireccionHtml();
+            int contador = 0;
+            archivo.htmlErroresSintacticos(nombre, ruta);
+            ArrayList<ErrorSintactico> errores = analizador.getErroresSintacticos();
+            for (ErrorSintactico errore : errores) {
+                contador++;
+                archivo.escribirHtmlErroresSintacticos(contador,
+                        errore.getError(),
+                        errore.getTipoEncontrado(),
+                        errore.getTipoEsperado(),
+                        errore.getFila(),
+                        errore.getColumna(),
+                        "#FF0000");
+
+            }
+        }
+    }
+    public void generarTablaDeSimbolos(String nombre){
+         if (analizador != null) {
+            archivo = new Archivo();
+            String ruta = principalFrame.getDireccionHtml();
+            int contador = 0;
+            archivo.htmlTablaDeSimbolos(nombre, ruta);
+             TablaSimbolos simbolos = analizador.getTablaSimbolos();
+             ArrayList<Simbolo> simbolo = simbolos.getListaSimbolos();
+             for (Simbolo simbolo1 : simbolo) {
+                 archivo.escribirHtmlTablaDeSimbolos(simbolo1.getNombre(), simbolo1.getTipo(), 
+                         simbolo1.getValor(), simbolo1.getFila(), simbolo1.getColumna(),  "#FF0000");
+             }
+          
+        }
+    }
+
+    public void crearArbol(String nombre) {
+        if (analizador != null) {
+            archivo = new Archivo();
+            String ruta = principalFrame.getDireccionHtml();
+
+            archivo.htmlReporteAST(nombre, ruta);
+            EsribirReporteAST AST = new EsribirReporteAST();
+            String texto = AST.generarTextoAST(program);
+            archivo.escribirHtmlAST(texto);
+
+        }
 
     }
 
     public void crearHtmlTokensIncorrectos(String nombre) {
-        String ruta = principalFrame.getDireccionHtml();
+        if (analizador != null) {
+            archivo = new Archivo();
+            String ruta = principalFrame.getDireccionHtml();
+            int contador = 0;
+            archivo.htmlTokens(nombre, ruta);
+            ArrayList<Token> incorrecto = ErroresLexicos(analizador.getListaDeTokens());
+            for (Token incorrectos : incorrecto) {
+                contador++;
+                archivo.escribirHtml(contador, incorrectos.getLexema(), incorrectos.getTipo().toString(), incorrectos.getFila(),
+                        incorrectos.getColumna(), incorrectos.obtenerColorTokenHTML());
+
+            }
+        }
 
     }
 
@@ -253,7 +375,7 @@ public class MotorFrame {
     private int obtenerNumero(StyledDocument doc, int fila, int columna) {
         try {
             Element raiz = doc.getDefaultRootElement();
-            int indiceLinea = fila - 1; 
+            int indiceLinea = fila - 1;
 
             if (indiceLinea < 0 || indiceLinea >= raiz.getElementCount()) {
                 return -1;

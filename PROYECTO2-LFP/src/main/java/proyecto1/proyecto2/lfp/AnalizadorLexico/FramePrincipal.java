@@ -33,6 +33,12 @@ public class FramePrincipal extends javax.swing.JFrame {
         
     }
 
+    public JTextArea getTxtError() {
+        return txtError;
+    }
+
+  
+
     public File getArchivo() {
         return archivoFile;
     }
@@ -87,8 +93,6 @@ public class FramePrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ScrolPaneConsolaResultados = new javax.swing.JScrollPane();
-        txtConsolaResultados = new javax.swing.JTextArea();
         Analizador = new javax.swing.JTabbedPane();
         CodigoFuente = new javax.swing.JPanel();
         ScrollPanelTextoFuente = new javax.swing.JScrollPane();
@@ -102,6 +106,14 @@ public class FramePrincipal extends javax.swing.JFrame {
         erroresSintacticos = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaErroresSintacticos = new javax.swing.JTable();
+        Errores = new javax.swing.JTabbedPane();
+        ScrolPaneConsolaResultados = new javax.swing.JScrollPane();
+        txtConsolaResultados = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtError = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         btnCargarArchvio = new javax.swing.JMenu();
         btnAnalizar = new javax.swing.JMenu();
@@ -109,12 +121,13 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnTokensCorrectosHTml = new javax.swing.JMenu();
         btnTokensIncorrectosHtml = new javax.swing.JMenu();
         btnArbol = new javax.swing.JMenu();
+        btnGuardarPromt = new javax.swing.JMenu();
+        btnExportarErroresSintacticos = new javax.swing.JMenu();
+        TablaDeTipos = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtConsolaResultados.setColumns(20);
-        txtConsolaResultados.setRows(5);
-        ScrolPaneConsolaResultados.setViewportView(txtConsolaResultados);
+        Analizador.setBackground(new java.awt.Color(0, 204, 204));
 
         CodigoFuente.setLayout(new java.awt.BorderLayout());
 
@@ -126,6 +139,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         IstaDeTokens.setLayout(new java.awt.BorderLayout());
 
+        tablaTokens.setBackground(new java.awt.Color(204, 255, 204));
         tablaTokens.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -145,6 +159,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         ListaDeTokensIncorrectos.setLayout(new java.awt.BorderLayout());
 
+        tablaTokenIncorrectos.setBackground(new java.awt.Color(255, 255, 204));
         tablaTokenIncorrectos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -164,6 +179,7 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         erroresSintacticos.setLayout(new java.awt.BorderLayout());
 
+        tablaErroresSintacticos.setBackground(new java.awt.Color(204, 255, 204));
         tablaErroresSintacticos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -181,8 +197,31 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         Analizador.addTab("Errores sintacticos", erroresSintacticos);
 
-        jMenuBar1.setBackground(new java.awt.Color(255, 255, 255));
-        jMenuBar1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Errores.setBackground(new java.awt.Color(102, 153, 255));
+
+        txtConsolaResultados.setColumns(20);
+        txtConsolaResultados.setRows(5);
+        ScrolPaneConsolaResultados.setViewportView(txtConsolaResultados);
+
+        Errores.addTab("Consola", ScrolPaneConsolaResultados);
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        txtError.setColumns(20);
+        txtError.setRows(5);
+        jScrollPane2.setViewportView(txtError);
+
+        jPanel1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        Errores.addTab("Errores", jPanel1);
+
+        jButton1.setText("jButton1");
+
+        jButton2.setText("jButton2");
+
+        jMenuBar1.setBackground(new java.awt.Color(204, 204, 204));
+        jMenuBar1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jMenuBar1.setForeground(new java.awt.Color(0, 102, 102));
 
         btnCargarArchvio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btnCargarArchvio.setText("Cargar archivo");
@@ -230,13 +269,34 @@ public class FramePrincipal extends javax.swing.JFrame {
         jMenuBar1.add(btnTokensIncorrectosHtml);
 
         btnArbol.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        btnArbol.setText("Abol");
+        btnArbol.setText("Generar AST");
         btnArbol.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnArbolMouseClicked(evt);
             }
         });
         jMenuBar1.add(btnArbol);
+
+        btnGuardarPromt.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnGuardarPromt.setText("Exportar promt");
+        btnGuardarPromt.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardarPromtMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(btnGuardarPromt);
+
+        btnExportarErroresSintacticos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnExportarErroresSintacticos.setText("Exportar Errores sintacticos");
+        btnExportarErroresSintacticos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnExportarErroresSintacticosMouseClicked(evt);
+            }
+        });
+        jMenuBar1.add(btnExportarErroresSintacticos);
+
+        TablaDeTipos.setText("Tabla de simbolos");
+        jMenuBar1.add(TablaDeTipos);
 
         setJMenuBar(jMenuBar1);
 
@@ -247,20 +307,18 @@ public class FramePrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Analizador)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(ScrolPaneConsolaResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 1077, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(Analizador, javax.swing.GroupLayout.DEFAULT_SIZE, 1085, Short.MAX_VALUE)
+                    .addComponent(Errores))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addGap(22, 22, 22)
                 .addComponent(Analizador, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(ScrolPaneConsolaResultados, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
+                .addGap(18, 18, 18)
+                .addComponent(Errores, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -310,7 +368,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             motor.crearPz(nombre);
 
         } else {
-            JOptionPane.showMessageDialog(null, "No se puede crear el archivo html");
+            JOptionPane.showMessageDialog(null, "No se puede guardar el archivo ");
         }
 
         // TODO add your handling code here:
@@ -364,27 +422,82 @@ public class FramePrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTokensIncorrectosHtmlMouseClicked
 
     private void btnArbolMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnArbolMouseClicked
-//        String nombre = JOptionPane.showInputDialog("Introduce un nombre para el archivo:");
-//        if (nombre == null) {
-//            return;
-//        }
-//        JFileChooser seleccionar = new JFileChooser();
-//        seleccionar.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//
-//        int resultado = seleccionar.showOpenDialog(null);
-//
-//        if (resultado == JFileChooser.APPROVE_OPTION) {
-//
-//            File carpeta = seleccionar.getSelectedFile();
-//            direccionHtml = carpeta.getAbsolutePath();
-//            motor.crearEstadisitca(nombre);
-//
-//        } else {
-//            JOptionPane.showMessageDialog(null, "No se puede crear el archivo html");
-//        }
+    String nombre = JOptionPane.showInputDialog("Introduce tu nombre:");
+        if (nombre == null) {
+            return;
+        }
+        JFileChooser seleccionar = new JFileChooser();
+        seleccionar.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-        // TODO add your handling code here:
+        int resultado = seleccionar.showOpenDialog(null);
+
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+
+            File carpeta = seleccionar.getSelectedFile();
+            direccionHtml = carpeta.getAbsolutePath();
+            motor.crearArbol(nombre);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "No se puede crear el archivo ");
+        }// 
     }//GEN-LAST:event_btnArbolMouseClicked
+
+    private void btnGuardarPromtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarPromtMouseClicked
+     JFileChooser seleccionar = new JFileChooser();
+    seleccionar.setDialogTitle("Guardar Prompt Generado");
+
+    seleccionar.addChoosableFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivo Markdown (*.md)", "md"));
+    seleccionar.addChoosableFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivo de Texto (*.txt)", "txt"));
+    seleccionar.setFileFilter(seleccionar.getChoosableFileFilters()[0]);
+
+    int resultado = seleccionar.showSaveDialog(this);
+
+    if (resultado == JFileChooser.APPROVE_OPTION) {
+        File archivo = seleccionar.getSelectedFile();
+        String extension = "md";
+
+        javax.swing.filechooser.FileFilter filtroActual = seleccionar.getFileFilter();
+        if (filtroActual != null && filtroActual.getDescription().contains(".txt")) {
+            extension = "txt";
+        }
+
+        String ruta = archivo.getAbsolutePath();
+        if (!ruta.toLowerCase().endsWith("." + extension)) {
+            archivo = new File(ruta + "." + extension);
+        }
+
+        try (java.io.FileWriter writer = new java.io.FileWriter(archivo)) {
+            writer.write(txtConsolaResultados.getText());
+            JOptionPane.showMessageDialog(this, "Archivo guardado exitosamente en:\n" + archivo.getAbsolutePath(), "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (java.io.IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar el archivo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Operación cancelada. El archivo no fue guardado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+    }
+        //        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGuardarPromtMouseClicked
+
+    private void btnExportarErroresSintacticosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnExportarErroresSintacticosMouseClicked
+         String nombre = JOptionPane.showInputDialog("Introduce tu nombre:");
+        if (nombre == null) {
+            return;
+        }
+        JFileChooser seleccionar = new JFileChooser();
+        seleccionar.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int resultado = seleccionar.showOpenDialog(null);
+
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+
+            File carpeta = seleccionar.getSelectedFile();
+            direccionHtml = carpeta.getAbsolutePath();
+            motor.crearHtmlErrorSintactico(nombre);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "No se puede hacer esta accion");
+        }// TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarErroresSintacticosMouseClicked
 
     /**
      * @param args the command line arguments
@@ -393,25 +506,34 @@ public class FramePrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane Analizador;
     private javax.swing.JPanel CodigoFuente;
+    private javax.swing.JTabbedPane Errores;
     private javax.swing.JPanel IstaDeTokens;
     private javax.swing.JPanel ListaDeTokensIncorrectos;
     private javax.swing.JScrollPane ScrolPaneConsolaResultados;
     private javax.swing.JScrollPane ScrollPanelTextoFuente;
+    private javax.swing.JMenu TablaDeTipos;
     private javax.swing.JTextPane TextoFuente;
     private javax.swing.JScrollPane TokensIncorectos;
     private javax.swing.JMenu btnAnalizar;
     private javax.swing.JMenu btnArbol;
     private javax.swing.JMenu btnCargarArchvio;
+    private javax.swing.JMenu btnExportarErroresSintacticos;
     private javax.swing.JMenu btnGuardar;
+    private javax.swing.JMenu btnGuardarPromt;
     private javax.swing.JMenu btnTokensCorrectosHTml;
     private javax.swing.JMenu btnTokensIncorrectosHtml;
     private javax.swing.JPanel erroresSintacticos;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable tablaErroresSintacticos;
     private javax.swing.JTable tablaTokenIncorrectos;
     private javax.swing.JTable tablaTokens;
     private javax.swing.JTextArea txtConsolaResultados;
+    private javax.swing.JTextArea txtError;
     // End of variables declaration//GEN-END:variables
 }

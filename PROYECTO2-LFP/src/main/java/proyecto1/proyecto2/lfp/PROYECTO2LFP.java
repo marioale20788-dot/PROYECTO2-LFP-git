@@ -4,6 +4,7 @@
 
 package proyecto1.proyecto2.lfp;
 
+import proyecto1.proyecto2.lfp.AnalizadorLexico.FrameDeInicio;
 import proyecto1.proyecto2.lfp.AnalizadorLexico.MotorFrame;
 
 /**
@@ -13,7 +14,7 @@ import proyecto1.proyecto2.lfp.AnalizadorLexico.MotorFrame;
 public class PROYECTO2LFP {
 
     public static void main(String[] args) {
-        MotorFrame motor = new MotorFrame();
-        motor.inciarAnalizador();
+        FrameDeInicio inicio = new FrameDeInicio();
+       inicio.setVisible(true);
     }
 }
