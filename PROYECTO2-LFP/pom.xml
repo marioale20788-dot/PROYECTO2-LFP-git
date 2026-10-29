@@ -7,10 +7,10 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>17</maven.compiler.release>
+        <maven.compiler.release>25</maven.compiler.release>
         <exec.mainClass>proyecto1.proyecto2.lfp.PROYECTO2LFP</exec.mainClass>
     </properties>
-       <build>
+     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -27,4 +27,5 @@
             </plugin>
         </plugins>
     </build>
+    
 </project>
